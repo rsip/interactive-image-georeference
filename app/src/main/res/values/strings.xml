@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Image Geo Referencer</string>
+    <string name="action_pick_photo">Choose a Photo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="text_alpha_label">Visability</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="action_satellite">Satellite View</string>
+    <string name="action_mark_GCP">Mark GCP</string>
+    <string name="title_gcp_marker_info">Ground Control Point</string>
+    <string name="snippet_gcp_marker_info">Long press to drag me around</string>
+    <string name="title_migrating_gcp_marker_warning_dialog">Moving GCP Marker</string>
+    <string name="message_migrating_gcp_marker_warning_dialog">Do you really want to move the ground control point marker to where you just long pressed on the map?\n\nReference between the marker and their location on the image will remain unchanged.</string>
+    <string name="snippet_search_result_marker">Tap me to drop the ground control point around here</string>
+
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/confirm"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_confirm"
+        android:visible="false"></item>
+    <item
+        android:id="@+id/action_mark_GCP"
+        android:icon="@drawable/ic_action_mark_gcp"
+        android:showAsAction="always"
+        android:title="@string/action_mark_GCP"
+        android:visible="false"></item>
+    <item
+        android:id="@+id/previousGCP"
+        android:icon="@drawable/ic_action_previous"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_previous"></item>
+    <item
+        android:id="@+id/nextGCP"
+        android:icon="@drawable/ic_action_next"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_next"></item>
+    <item
+        android:id="@+id/satellite"
+        android:checkable="true"
+        android:checked="true"
+        android:showAsAction="never"
+        android:title="@string/action_satellite"></item>
+
+</menu>
