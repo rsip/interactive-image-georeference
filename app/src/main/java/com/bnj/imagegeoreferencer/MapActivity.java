@@ -47,7 +47,8 @@ public class MapActivity extends FragmentActivity {
     // Global constants
     private static final String TAG = MapActivity.class.getName();
     private static final String GCPS_EXTRA_KEY = "com.bnj.imagegeoreferencer.extra.GCP_COLLECTION";
-    private static final String BUILDING_LOCATION_EXTRA_KEY = "com.bnj.imagegeoreferencer.extra.BUILDING_LOCATION";
+    private static final String BUILDING_LOCATION_EXTRA_KEY = "com.bnj.imagegeoreferencer.extra" +
+            ".BUILDING_LOCATION";
     private GoogleMap mMap;
     private TileView mTileView;
     private StatefulDataObject dataObject;
@@ -118,8 +119,8 @@ public class MapActivity extends FragmentActivity {
         Intent intent = getIntent();
         double[] buildingCoordinates = intent
                 .getDoubleArrayExtra(BUILDING_LOCATION_EXTRA_KEY);
-        double lng = buildingCoordinates[1];
         double lat = buildingCoordinates[0];
+        double lng = buildingCoordinates[1];
         // move google map camera to the building
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng),
                 17));
@@ -127,7 +128,7 @@ public class MapActivity extends FragmentActivity {
 
     private void restoreAllSavedGCPs() {
         // if the intent carries recorded GCPs,
-        if (getIntent().getExtras().containsKey(GCPS_EXTRA_KEY)) {
+        if (getIntent().getDoubleArrayExtra(GCPS_EXTRA_KEY) != null) {
             Intent intent = getIntent();
             double[] rawCoordinates = intent
                     .getDoubleArrayExtra(GCPS_EXTRA_KEY);
@@ -135,12 +136,11 @@ public class MapActivity extends FragmentActivity {
             Iterator<Marker> itr = dataObject.markerUserDataMap.keySet()
                     .iterator();
             for (int i = 0; i < rawCoordinates.length; i++) {
-                if (i != 0 && i % gcpCoordinates.length == 0) {
+                gcpCoordinates[i % gcpCoordinates.length] = rawCoordinates[i];
+                if ((i + 1) % gcpCoordinates.length == 0) {
                     restoreSavedGCP(gcpCoordinates, itr.next());
                 }
-                gcpCoordinates[i % gcpCoordinates.length] = rawCoordinates[i];
             }
-
         }
     }
 
@@ -252,8 +252,8 @@ public class MapActivity extends FragmentActivity {
     private void restoreSavedGCP(double[] gcpCoordinates, Marker mapMarker) {
         double rx = gcpCoordinates[0];
         double ry = gcpCoordinates[1];
-        double lng = gcpCoordinates[2];
-        double lat = gcpCoordinates[3];
+        double lat = gcpCoordinates[2];
+        double lng = gcpCoordinates[3];
         // move the google map markers according to the GCPs
         mapMarker.setPosition(new LatLng(lat, lng));
         // create corresponding marker objects for TileView in memory
@@ -263,6 +263,7 @@ public class MapActivity extends FragmentActivity {
         ImageView view = new ImageView(this);
         view.setImageResource(R.drawable.ic_push_pin);
         imageMarker.view = view;
+
         // and store the link between google map markers and tile view markers
         // in the retained data object
         dataObject.markerUserDataMap.put(mapMarker, imageMarker);
@@ -362,8 +363,8 @@ public class MapActivity extends FragmentActivity {
                         .entrySet()) {
                     gcpsResult[index++] = entry.getValue().x;
                     gcpsResult[index++] = entry.getValue().y;
-                    gcpsResult[index++] = entry.getKey().getPosition().longitude;
                     gcpsResult[index++] = entry.getKey().getPosition().latitude;
+                    gcpsResult[index++] = entry.getKey().getPosition().longitude;
 
                     int originalX = (int) (dataObject.originalPhotoWidth * entry
                             .getValue().x);
@@ -371,8 +372,8 @@ public class MapActivity extends FragmentActivity {
                             .getValue().y);
                     Log.i(TAG, "Ground Control Point confirmed: image ("
                             + originalX + "," + originalY + ") => map ("
-                            + entry.getKey().getPosition().longitude + ","
-                            + entry.getKey().getPosition().latitude + ")");
+                            + entry.getKey().getPosition().latitude + ","
+                            + entry.getKey().getPosition().longitude + ")");
                 }
                 Intent intent = new Intent();
                 intent.putExtra(GCPS_EXTRA_KEY, gcpsResult);
